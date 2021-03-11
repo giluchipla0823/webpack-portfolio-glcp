@@ -1,0 +1,142 @@
+# Instalar webpack
+npm install webpack webpack-cli -D 
+
+# Compilar webpack 
+npx webpack --mode production  
+
+Si queremos añadir el autocompletado para nuestro archivo de webpack, podemos añadir el siguiente código antes del module.exports
+/** @type {import('webpack').Configuration} */
+
+# Webpack con archivo de configuración
+npx webpack --mode production --config webpack.config.js
+
+# Babel Loader para JavaScript
+Babel te permite hacer que tu código JavaScript sea compatible con todos los navegadores.
+Babel te ayuda a transpilar el código JavaScript, a un resultado el cual todos los navegadores lo 
+puedan entender y ejecutar. Trae “extensiones” o plugins las cuales nos permiten tener 
+características más allá del JavaScript común.
+
+npm install -D babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime
+
+* babel-loader nos permite usar babel con webpack
+* @babel/core es babel en general
+* @babel/preset-env trae y te permite usar las ultimas características de JavaScript
+* @babel/plugin-transform-runtime te permite trabajar con todo el tema de asincronismo como ser async y await
+* Debes crear el archivo de configuración de babel el cual tiene como nombre .babelrc
+
+
+# HTML en Webpack
+
+HtmlWebpackPlugin
+Es un plugin para inyectar javascript, css, favicons, y nos facilita la tarea de enlazar los 
+bundles a nuestro template HTML.
+
+npm i html-webpack-plugin -D
+
+# Loaders para CSS y preprocesadores de CSS
+
+MiniCssExtractPlugin
+Este loader lo que nos permite es que en nuestro proyecto de desarrollo poder importar en los archivos 
+JavaScript importar archivos CSS o de otros preprocesadores, al final webpack importara en nuestro 
+HTML todo nuestro css.
+
+npm i mini-css-extract-plugin css-loader -D
+npm i stylus-loader -D
+
+
+# Copia de archivos con Webpack
+Mover archivos o elementos a la carpeta "dist".
+
+npm i copy-webpack-plugin -D
+
+# Loaders de imágenes
+Loader de imágenes
+Este loader nos permite importar de forma dinámica en nuestros archivos JavaScript imágenes, 
+el loader le genera un hash unico para cada imagen. Algo parecido sucede con ReactJS 
+al importar imágenes.
+
+# Loaders de fuentes
+- Las fuentes optimizadas para web son: woff y  woof2
+
+npm install url-loader file-loader -D
+
+# Optimización: hashes, compresión y minificación de archivos
+
+¿Por qué es importante usar Hashes en nuestros archivos?
+Los recursos que se guardan en memoria cache suceden cuando el navegador entra a un sitio 
+por primera vez detecta los recursos y los guarda. Por ello la siguiente vez sera mucho más 
+rápido porque estarán en memoria La desventaja esta cuando sacamos una nueva versión, porque 
+tendrán un mismo nombre evitando que se descargue los nuevos cambios, por lo tanto, el usuario 
+no recibirá los nuevos cambios Para que no haya conflictos con la cache una vez que tengamos 
+nuestro proyecto en producción es importante darles un hash para cada nueva versión.
+
+
+-CssMinimizerPlugin
+Es un plugin que nos permite minificar y optimizar los archivos CSS, por dentro del plugin utiliza una herramienta llamada cssnano
+Documentación de CssMinimizer
+
+-TerserWebpackPlugin
+Es otro plugin que nos minifica nuestro javascript
+Documentación de TerserPlugin
+
+npm i css-minimizer-webpack-plugin terser-webpack-plugin -D
+
+# Webpack Alias
+* Alias ⇒ nos permiten otorgar nombres paths específicos evitando los paths largos
+* Para crear un alias debes agregar la siguiente configuración a webpack
+
+resolve: {
+		...
+    alias: {
+      '@nombreDeAlias': path.resolve(__dirname, 'src/<directorio>'),
+    },
+}
+
+No olvides comentar que alias forma parte del objeto resolve el cual nos permite configurar 
+la forma en que webpack resolverá los módulos incorporados.
+
+En nuestro camino, tenemos dos:
+resolve.alias - para crear atajos que optimizan el tiempo de búsqueda e incorporación de módulos 
+(commonJS o ES6)
+resolve.extensions - para darle prioridad en resolución para con las extensiones donde si 
+hay archivos nombrados igualmente, pero con diferentes extensiones, webpack resolverá 
+conforme están listados.
+
+
+# Variables de entorno
+- Es importante considerar las variables de entorno va a ser un espacio seguro donde podemos guardar 
+  datos sensibles
+
+- Las variables de entorno son variables externas a nuestra aplicación que residen en el sistema 
+  operativo o en el contenedor de la aplicación que se está ejecutando. Una variable de entorno 
+  es simplemente un nombre asignado a un valor como una variable es cualquier lenguaje de programación.
+
+- Comando: 
+  npm install -D dotenv-webpack
+
+# Webpack en modo producción
+- Actualmente tenemos el problema de tener varios archivos repetidos los cuales se fueron acumulando 
+  por compilaciones anteriores.
+
+- Para ello puedes limpiar la carpeta cada vez que hacemos un build, usando clean-webpack-plugin.
+
+- npm install -D clean-webpack-plugin
+
+
+# Webpack Watch
+
+En webpack.config.js
+module.exports = {
+	...
+	watch: true
+}
+
+En package.json:
+
+{
+	"scripts": {
+		"dev:watch": "webpack --config webpack.config.dev.js --watch"
+	}
+}
+
+# Deploy a Netlify
